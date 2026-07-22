@@ -1,0 +1,107 @@
+
+
+.userDiv{
+display:flex;
+justify-content:flex-end;
+font-size: 0.95rem;
+}
+.chats{
+width: 100%;
+max-width: 100%;
+overflow-y: scroll;
+padding: 8rem 0;
+display: flex;
+flex-direction: column;
+align-items: center;   /* centers the inner content */
+gap: 2rem;
+}
+
+.userDiv, .gptDiv{
+width: 100%;
+max-width: 900px;
+padding-left: 2rem;
+padding-right: 2rem;
+}
+
+.userMessage{
+background-color: #323232;
+padding:10px 20px;
+border-radius: 14px;
+margin-left: 15rem;
+max-width: 600px;
+width: fit-content;
+}
+
+.gptDiv{
+text-align: left;
+font-size: 1rem;
+line-height: 1.7;
+color: #ececec;
+width: 100%;
+}
+
+.gptDiv h1, .gptDiv h2, .gptDiv h3{
+margin: 1.2rem 0 0.5rem 0;
+font-weight: 600;
+color: #fff;
+}
+
+.gptDiv p{
+margin: 0.7rem 0;
+}
+
+.gptDiv ul, .gptDiv ol{
+margin: 0.5rem 0 1rem 0;
+padding-left: 1.4rem;
+}
+
+.gptDiv li{
+margin: 0.4rem 0;
+}
+
+.gptDiv strong{
+font-weight: 600;
+color: #fff;
+}
+
+.gptDiv hr{
+border: none;
+border-top: 1px solid #444;
+margin: 1.2rem 0;
+}
+
+.gptDiv table{
+border-collapse: collapse;
+margin: 1rem 0;
+width: 100%;
+}
+
+.gptDiv th, .gptDiv td{
+border: 1px solid #444;
+padding: 0.6rem 1rem;
+text-align: left;
+}
+
+.hljs{
+border-radius:10px !important;
+}
+
+.gptDiv pre{
+background:#1a1a1a;
+border-radius:10px;
+padding:1rem;
+overflow-x:auto;
+margin: 0.8rem 0;
+}
+
+.gptDiv code{
+font-family:"Fira Code",monospace;
+font-size:0.85rem;
+}
+
+.gptDiv :not(pre)>code{
+background:rgba(255,255,255,0.12);
+padding:0.15rem 0.4rem;
+border-radius:4px;
+color:#f4a261;
+}
