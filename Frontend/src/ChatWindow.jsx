@@ -6,6 +6,8 @@ import Chat from "./Chat.jsx";
 import { MyContext } from "./MyContext.jsx";
 import { ScaleLoader } from "react-spinners";
 
+const API_URL = import.meta.env.VITE_API_URL; // NEW
+
 function ChatWindow() {
   const { prompt, setPrompt, reply, setReply, currThreadId, setCurrThreadId, prevChats, setPrevChats, setNewChat, token, setToken } = useContext(MyContext);
   const [loading, setLoading] = useState(false);
@@ -15,7 +17,7 @@ function ChatWindow() {
   const [isRecording, setIsRecording] = useState(false);
   const mediaRecorderRef = useRef(null);
   const audioChunksRef = useRef([]);
-  const cancelledRef = useRef(false); // NEW: tracks whether user cancelled the recording
+  const cancelledRef = useRef(false);
 
   const getReply = async () => {
     setLoading(true);
@@ -32,7 +34,7 @@ function ChatWindow() {
       })
     };
     try {
-      const response = await fetch("http://localhost:8080/api/chat", options);
+      const response = await fetch(`${API_URL}/api/chat`, options); // CHANGED
       const res = await response.json();
       setReply(res.reply);
     } catch (err) {
@@ -75,22 +77,21 @@ function ChatWindow() {
     const recorder = new MediaRecorder(stream);
     mediaRecorderRef.current = recorder;
     audioChunksRef.current = [];
-    cancelledRef.current = false; // reset on every new recording
+    cancelledRef.current = false;
 
     recorder.ondataavailable = (e) => audioChunksRef.current.push(e.data);
 
     recorder.onstop = async () => {
       stream.getTracks().forEach(t => t.stop());
 
-      // NEW: if cancelled, discard audio and skip transcription entirely
       if (cancelledRef.current) {
         cancelledRef.current = false;
         return;
       }
 
-      await new Promise(r => setTimeout(r, 100)); // ensures all chunks are flushed
+      await new Promise(r => setTimeout(r, 100));
       const audioBlob = new Blob(audioChunksRef.current, { type: "audio/webm" });
-        console.log("blob size:", audioBlob.size); 
+      console.log("blob size:", audioBlob.size);
       await sendAudioForTranscription(audioBlob);
     };
 
@@ -103,7 +104,6 @@ function ChatWindow() {
     setIsRecording(false);
   };
 
-  // NEW: stops recording and discards the audio (no transcription sent)
   const cancelRecording = () => {
     cancelledRef.current = true;
     mediaRecorderRef.current.stop();
@@ -114,7 +114,7 @@ function ChatWindow() {
     const formData = new FormData();
     formData.append("audio", audioBlob, "recording.webm");
 
-    const res = await fetch("http://localhost:8080/api/transcribe", {
+    const res = await fetch(`${API_URL}/api/transcribe`, { // CHANGED
       method: "POST",
       headers: { "Authorization": `Bearer ${token}` },
       body: formData
@@ -155,7 +155,6 @@ function ChatWindow() {
             onKeyDown={(e) => e.key === 'Enter' && !isRecording ? getReply() : ''}
           />
 
-          {/* NEW: while recording, show pulsing dot (click = stop & send) + X (click = cancel) */}
           {isRecording ? (
             <div className="recordingUI" onClick={stopRecording}>
               <span className="recDot"></span>

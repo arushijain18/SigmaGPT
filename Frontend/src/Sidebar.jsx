@@ -4,12 +4,14 @@ import { MyContext } from "./MyContext";
 import { useContext, useEffect } from "react";
 import { v1 as uuidv1 } from "uuid";
 
+const API_URL = import.meta.env.VITE_API_URL; // NEW
+
 function Sidebar() {
   const { allThreads, setAllThreads, currThreadId, setNewChat, setPrompt, setReply, setCurrThreadId, setPrevChats, token } = useContext(MyContext);
 
   const getAllThreads = async () => {
     try {
-      const response = await fetch("http://localhost:8080/api/thread", {
+      const response = await fetch(`${API_URL}/api/thread`, { // CHANGED
         headers: { "Authorization": `Bearer ${token}` }
       });
       const res = await response.json();
@@ -35,7 +37,7 @@ function Sidebar() {
   const changeThread = async (newThreadId) => {
     setCurrThreadId(newThreadId);
     try {
-      const response = await fetch(`http://localhost:8080/api/thread/${newThreadId}`, {
+      const response = await fetch(`${API_URL}/api/thread/${newThreadId}`, { // CHANGED
         headers: { "Authorization": `Bearer ${token}` }
       });
       const res = await response.json();
@@ -49,7 +51,7 @@ function Sidebar() {
 
   const deleteThread = async (threadId) => {
     try {
-      const response = await fetch(`http://localhost:8080/api/thread/${threadId}`, {
+      const response = await fetch(`${API_URL}/api/thread/${threadId}`, { // CHANGED
         method: "DELETE",
         headers: { "Authorization": `Bearer ${token}` }
       });

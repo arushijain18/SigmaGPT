@@ -1,69 +1,8 @@
-// import { useState, useContext } from "react";
-// import { MyContext } from "./MyContext";
-// import "./Login.css";
-
-// function Auth() {
-//   const { setToken } = useContext(MyContext);
-//   const [isLogin, setIsLogin] = useState(true);
-//   const [form, setForm] = useState({ name: "", email: "", password: "" });
-//   const [error, setError] = useState("");
-
-//   const submit = async () => {
-//     setError("");
-//     try {
-//       const url = `http://localhost:8080/api/auth/${isLogin ? "login" : "signup"}`;
-//       const res = await fetch(url, {
-//         method: "POST",
-//         headers: { "Content-Type": "application/json" },
-//         body: JSON.stringify(form)
-//       }).then(r => r.json());
-
-//       if (res.token) {
-//         localStorage.setItem("token", res.token);
-//         setToken(res.token);
-//       } else {
-//         setError(res.message || "Something went wrong");
-//       }
-//     } catch (err) {
-//       console.log(err);
-//       setError("Server error, try again");
-//     }
-//   };
-
-//   return (
-//     <div className="loginPage">
-//       <div className="loginBox">
-//         <div className="loginLogo">✻</div>
-//         <h1>SIGMAGPT</h1>
-//         <p className="subtitle">{isLogin ? "Welcome back" : "Create account"}</p>
-//         <p className="subtext">{isLogin ? "Sign in to continue" : "Sign up to get started"}</p>
-
-//         {!isLogin && (
-//           <input placeholder="Name" onChange={e => setForm({ ...form, name: e.target.value })} />
-//         )}
-//         <input placeholder="Email" onChange={e => setForm({ ...form, email: e.target.value })} />
-//         <input type="password" placeholder="Password" onChange={e => setForm({ ...form, password: e.target.value })} />
-
-//         {error && <p style={{ color: "#f87171", fontSize: "0.85rem" }}>{error}</p>}
-
-//         <button onClick={submit}>{isLogin ? "Log in" : "Sign up"}</button>
-
-//         <div className="divider">OR</div>
-
-//         <p className="switchText" onClick={() => setIsLogin(!isLogin)}>
-//           {isLogin ? "Don't have an account? " : "Already have an account? "}
-//           <b>{isLogin ? "Sign up instead" : "Log in instead"}</b>
-//         </p>
-//       </div>
-//     </div>
-//   );
-// }
-
-// export default Auth;
-
 import { useState, useContext } from "react";
 import { MyContext } from "./MyContext";
 import "./Login.css";
+
+const API_URL = import.meta.env.VITE_API_URL; // NEW
 
 function Auth() {
   const { setToken } = useContext(MyContext);
@@ -75,7 +14,7 @@ function Auth() {
   const submit = async () => {
     setError("");
     try {
-      const url = `http://localhost:8080/api/auth/${isLogin ? "login" : "signup"}`;
+      const url = `${API_URL}/api/auth/${isLogin ? "login" : "signup"}`; // CHANGED
       const res = await fetch(url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
