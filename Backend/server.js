@@ -8,14 +8,17 @@ import passport from "./config/passport.js";
 import authRoutes from "./routes/auth.js";  
 
 const app = express();
-const PORT = 8080;
+const PORT = process.env.PORT || 8080;
 
 app.use(express.json());         
-app.use(cors());
+
 app.use(passport.initialize());
 app.use("/api/auth", authRoutes);
 app.use("/api", chatRoutes);
-
+app.use(cors({
+  origin: ["http://localhost:5173", "https://sigmagpt-frontend-53bq.onrender.com"],
+  credentials: true
+}));
 const client = new OpenAI({
   apiKey: process.env.GROQ_API_KEY,
   baseURL: "https://api.groq.com/openai/v1",
